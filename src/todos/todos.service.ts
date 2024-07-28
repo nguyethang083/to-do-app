@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { Repository } from 'typeorm';
@@ -23,7 +22,9 @@ export class TodosService {
 
   async update(id: number, dto: CreateTodoDto) {
     const todo = await this.todoRepository.findOne({ where: { id } });
-    // check if todo exists
+    if (!todo) {
+      throw new Error('Todo not found');
+    }
 
     Object.assign(todo, dto);
 
