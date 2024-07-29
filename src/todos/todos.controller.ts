@@ -11,6 +11,9 @@ import {
 } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { RoleGuard } from 'src/auth/role/role.guard';
+import { JwtAuthGuard } from 'src/auth/strategies/jwt.guard';
 
 @Controller('todos')
 export class TodosController {
@@ -21,6 +24,8 @@ export class TodosController {
     return this.todosService.create(dto);
   }
 
+  @Roles('admin')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get()
   findMany() {
     return this.todosService.findMany();

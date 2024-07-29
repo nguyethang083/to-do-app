@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthenticateDto } from './dto/auth.dto';
-import { JwtAuthGuard } from 'src/strategies/jwt.guard';
+import { JwtAuthGuard } from 'src/auth/strategies/jwt.guard';
 import { RoleGuard } from './role/role.guard';
 import { Roles } from './roles/roles.decorator';
 
