@@ -3,8 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodosModule } from './todos/todos.module';
-import { Todo } from './todos/entities/todo.entity';
 import path, { join } from 'path';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +19,7 @@ import path, { join } from 'path';
       synchronize: true,
     }),
     TodosModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
