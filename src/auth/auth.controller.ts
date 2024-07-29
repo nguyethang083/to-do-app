@@ -7,14 +7,17 @@ import {
   Req,
   Res,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthenticateDto } from './dto/auth.dto';
 import { JwtAuthGuard } from 'src/auth/strategies/jwt.guard';
 import { RoleGuard } from './role/role.guard';
 import { Roles } from './roles/roles.decorator';
+import { LoggingInterceptor } from 'src/logging.interceptor';
 
 @Controller('auth')
+@UseInterceptors(LoggingInterceptor)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
