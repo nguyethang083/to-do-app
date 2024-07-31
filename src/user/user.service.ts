@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 import { Role } from 'src/auth/interface/user.interface';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserZodDto } from './dto/create-user-zod.dto';
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,7 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserZodDto) {
     let user: User = new User();
     user.email = createUserDto.email;
     user.firstName = createUserDto.firstName;

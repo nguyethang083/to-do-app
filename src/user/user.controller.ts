@@ -9,18 +9,22 @@ import {
   ValidationPipe,
   UseGuards,
   Req,
+  UsePipes,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
+import { ZodPipe } from 'src/pipe/zod.pipe';
+import { CreateUserZodDto } from './dto/create-user-zod.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('signUp')
-  create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+  @UsePipes(new ZodPipe(CreateUserZodDto))
+  create(@Body() createUserDto: CreateUserZodDto) {
     return this.userService.create(createUserDto);
   }
 
