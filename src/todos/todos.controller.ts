@@ -8,6 +8,7 @@ import {
   Delete,
   Put,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -19,31 +20,39 @@ import { JwtAuthGuard } from 'src/auth/strategies/jwt.guard';
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
-  @Post()
-  create(@Body() dto: CreateTodoDto) {
-    return this.todosService.create(dto);
+  @Post(':userId')
+  create(
+    @Body(ValidationPipe) createTodoDto: CreateTodoDto,
+    @Param('userId') userId: number,
+  ) {
+    return this.todosService.create(createTodoDto, Number(userId));
   }
 
-  @Roles('admin')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Get()
-  findMany() {
-    return this.todosService.findMany();
+  @Get('/findAllNotCompleted/:userId')
+  findAllTodosByUserIdNotCompleted(@Param('userId') userId: number) {
+    return this.todosService.findAllTodoByUserNotCompleted(Number(userId));
   }
 
-  @Put(':id')
-  update(@Param('id') id: number, @Body() dto: CreateTodoDto) {
-    return this.todosService.update(id, dto);
+  @Get('/findAllCompleted/:userId')
+  findAllTodosByUserIdCompleted(@Param('userId') userId: number) {
+    return this.todosService.findAllTodoByUserCompleted(Number(userId));
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: number) {
+    return this.todosService.update(Number(id));
+  }
+
+  @Patch(':userId/:id/complete')
+  async markAsComplete(
+    @Param('userId') userId: number,
+    @Param('id') id: number,
+  ) {
+    return this.todosService.markAsComplete(Number(userId), Number(id));
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.todosService.remove(id);
+  remove(@Param('id') id: string) {
+    return this.todosService.remove(Number(id));
   }
 }
-
-/*
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todosService.update(+id, updateTodoDto);
-  } */

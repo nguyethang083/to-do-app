@@ -14,6 +14,9 @@ export class Todo {
   @Column()
   completed: boolean;
 
+  @Column()
+  userId: number;
+
   // many todos can belong to one user
   @ManyToOne(() => User, (user) => user.todos)
   user: User;
