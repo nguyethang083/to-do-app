@@ -34,6 +34,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get(':id/todos')
+  findUserTodos(@Param('id') id: number) {
+    return this.userService.findUserWithTodos(+id);
+  }
+
   @Delete(':id')
   @Roles('admin')
   @UseGuards(RoleGuard)
